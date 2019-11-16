@@ -1,0 +1,44 @@
+Thumbs.db
+.DS_Store
+.gradle
+build/
+target/
+out/
+mongo-db/
+docker-tmp/lib/
+Docker-Images/influx-grafana/lib/
+.idea
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath
+
+#Java Excludes
+*.class
+*.log
+
+#Gradle Excludes
+bin/
+
+#packaging files
+*.jar
+*.war
+*.ear
+
+#Packages
+*.7z
+*.dmz
+*.gz
+*.iso
+*.rar
+*.tar
+*.zip
+
+#compiled sources
+*.com
+*.dll
+*.exe
+*.o
+*.so
