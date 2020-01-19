@@ -1,0 +1,57 @@
+project:
+  artifactId: demo-spring-swagger
+  name: demo-spring-swagger
+  version: 1.0.0
+  description: demo poc application for implementation practices
+
+
+# Exposing all the actuator end points (Spring 2.0) #
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          '*'
+
+  # Exposing the restart & shutdown endpoint
+  endpoint:
+    restart:
+      enabled: true
+    shutdown:
+      enabled: true
+
+# For Spring Actuator /info endpoint
+info:
+  artifact: ${project.artifactId}
+  name: ${project.name}
+  description: ${project.description}
+  version: ${project.version}
+
+# Spring
+spring:
+  application:
+    name: demo-spring-swagger
+
+
+# use a HTTP port 8080
+server:
+  port: 8085
+
+
+---
+spring:
+  profiles: stage
+
+server:
+  port: 8080
+
+
+---
+spring:
+  profiles: prod
+
+server:
+  port: 8080
+
+
+
