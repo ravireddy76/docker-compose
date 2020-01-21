@@ -1,0 +1,125 @@
+buildscript {
+    ext {
+        lombokVersion = '1.18.8'
+        sl4jVersion = '1.7.27'
+        apacheCommonsLang3Version = '3.9'
+        apacheCommonsTextVersion = '1.6'
+        apacheCommonsCollectionVersion = '4.3'
+        commonsCliVersion = '1.4'
+
+        jjwtApiVersion = '0.10.5'
+        jerseyVersion = '2.29'
+
+        spockCoreVersion = '1.3-groovy-2.5'
+        groovyVersion = '2.5.7'
+        junitVersion = '4.12'
+        cglibVersion = '3.2.4'
+        objenesisVersion = '2.4'
+        cglibNodepVersion = '3.2.2'
+        spockReportsVersion = '1.2.13'
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id "groovy"
+    id "java"
+    id "idea"
+    id "application"
+    id "net.ltgt.apt-eclipse" version "0.21"
+    id "net.ltgt.apt-idea" version "0.21"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+    id "com.github.johnrengelman.shadow" version "4.0.2"
+}
+
+
+/** Group and version configuration. */
+version ""
+group "com.mn.poc"
+
+/** JDK version configuration. */
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://jcenter.bintray.com" }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'io.micronaut:micronaut-bom:1.2.7'
+    }
+}
+
+configurations {
+    /** for dependencies that are needed for development only. */
+    developmentOnly
+}
+
+dependencies {
+    /** Lombok dependencies. */
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+
+    /** Micronaut dependencies. */
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+    annotationProcessor "io.micronaut:micronaut-validation"
+    annotationProcessor "io.micronaut:micronaut-security"
+    annotationProcessor 'io.micronaut.data:micronaut-data-processor:1.0.0.RC1'
+    compile "io.micronaut:micronaut-inject"
+    compile "io.micronaut:micronaut-http-client"
+    compile "io.micronaut:micronaut-http-server-netty"
+    compile 'io.micronaut:micronaut-management'
+    compile "io.micronaut:micronaut-runtime"
+    compile "io.micronaut:micronaut-security"
+    compile "io.micronaut:micronaut-security-jwt"
+    compile 'io.micronaut:micronaut-tracing'
+    compile "io.micronaut:micronaut-validation"
+    compile 'io.micronaut.configuration:micronaut-mongo-reactive'
+    compile "io.micronaut.configuration:micronaut-micrometer-core"
+    compile 'io.micronaut.data:micronaut-data-hibernate-jpa:1.0.0.RC1'
+    compile "io.micronaut.configuration:micronaut-micrometer-registry-prometheus"
+    compile 'io.micronaut.configuration:micronaut-hibernate-validator:1.2.0'
+
+    /** Third party dependencies. */
+    compile "org.apache.httpcomponents:httpclient:4.5.10"
+    compile "com.google.guava:guava:28.0-jre"
+    compile "ch.qos.logback:logback-classic:1.2.3"
+    compile "ch.qos.logback:logback-core:1.2.3"
+    compile "org.hibernate.validator:hibernate-validator:6.1.0.Final"
+
+
+    /** Apache dependencies. */
+    compile "org.apache.commons:commons-lang3:$apacheCommonsLang3Version"
+    compile "org.apache.commons:commons-text:$apacheCommonsTextVersion"
+    compile "org.apache.commons:commons-collections4:$apacheCommonsCollectionVersion"
+    compile "commons-cli:commons-cli:$commonsCliVersion"
+    compile "com.google.guava:guava:28.0-jre"
+
+    /** Jersey client. */
+    compile "org.glassfish.jersey.inject:jersey-hk2:$jerseyVersion"
+    compile "org.glassfish.jersey.core:jersey-client:$jerseyVersion"
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
+
+    /** Unit and Integration test dependencies.*/
+    testCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    testCompile "org.spockframework:spock-core:${spockCoreVersion}"
+    testCompile "junit:junit:${junitVersion}"
+    testCompile "cglib:cglib:${cglibVersion}"
+    testCompile "org.objenesis:objenesis:${objenesisVersion}"
+    testCompile "cglib:cglib-nodep:${cglibNodepVersion}" // for stubbing of classes
+}
+
+shadowJar {
+    mergeServiceFiles()
+}
+
+run.classpath += configurations.developmentOnly
+run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
+
+mainClassName = "com.mn.poc.PocApplication"
+compileJava.options.compilerArgs += '-parameters'
+compileTestJava.options.compilerArgs += '-parameters'

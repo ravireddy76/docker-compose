@@ -1,0 +1,34 @@
+micronaut:
+  application:
+    name: micronaut-poc
+  router:
+    static:
+      resources:
+        enabled: true
+        mapping: /**
+        paths: classpath:public
+  server:
+    host: 0.0.0.0
+    cors:
+      enabled: true
+    #port: 8081
+    metrics:
+      enabled: true
+      export:
+        prometheus:
+          enabled: true
+          step: PT1M
+          descriptions: true
+endpoints:
+  prometheus:
+    enabled: true
+    sensitive: false
+  info:
+    enabled: true
+    sensitive: false
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+    disk-space:
+      enabled: false
