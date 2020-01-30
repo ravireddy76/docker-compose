@@ -1,0 +1,5 @@
+profile: service
+defaultPackage: com.mn.poc
+---
+testFramework: spock
+sourceLanguage: java
