@@ -1,0 +1,48 @@
+micronaut:
+  application:
+    name: micronaut-mongodb-poc
+  router:
+    static:
+      resources:
+        enabled: true
+        mapping: /**
+        paths: classpath:public
+  server:
+    host: 0.0.0.0
+    cors:
+      enabled: true
+    #port: 8081
+    metrics:
+      enabled: true
+      export:
+        prometheus:
+          enabled: true
+          step: PT1M
+          descriptions: true
+endpoints:
+  prometheus:
+    enabled: true
+    sensitive: false
+  info:
+    enabled: true
+    sensitive: false
+  health:
+    enabled: true
+    sensitive: false
+    details-visible: ANONYMOUS
+    disk-space:
+      enabled: false
+
+---
+mongo:
+  user: ${MONGO_USERNAME:``}
+  password: ${MONGO_PASSWORD:``}
+  serverwithport: ${MONGO_SERVERWITHPORT_LIST:`localhost:27017`}
+  collection: ${MONGO_COLLECTION:`customeruser`}
+  database: ${MONGO_DATABASE:`poc-db`}
+  options: ${MONGO_OPTIONS:`?authSource=poc-db&authMechanism=SCRAM-SHA-1`}
+---
+mongodb:
+  uri: mongodb://${mongo.serverwithport}
+
+#uri: mongodb://${mongo.user}:${mongo.password}@${mongo.serverwithport}/${mongo.options}
