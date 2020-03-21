@@ -1,0 +1,12 @@
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:latest
+    container_name: "Local-Jenkins"
+    user: root
+    ports:
+      - "8085:8080"
+      - "8087:8087"
+    volumes:
+      - /docker-tmp/data/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock

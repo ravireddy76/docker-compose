@@ -1,0 +1,9 @@
+version: '3'
+services:
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-pro:latest
+    container_name: "Local-JFrog"
+    ports:
+      - "8086:8081"
+    volumes:
+      - /docker-tmp/jfrog/artifactory:/var/opt/jfrog/artifactory
