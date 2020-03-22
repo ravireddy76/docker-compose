@@ -1,0 +1,108 @@
+project:
+  artifactId: enrichment-service
+  name: enrichment-service
+  version: 1.0.0
+  description: Enrichment service is a micro service to validate and format the data
+
+
+# Exposing all the actuator end points (Spring 2.0) #
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          '*'
+
+  # Exposing the restart & shutdown endpoint
+  endpoint:
+    restart:
+      enabled: true
+    shutdown:
+      enabled: true
+
+# For Spring Actuator /info endpoint
+info:
+  artifact: ${project.artifactId}
+  name: ${project.name}
+  description: ${project.description}
+  version: ${project.version}
+
+# Spring
+spring:
+  application:
+    name: enrichment-service
+
+  #Postgres dB configuration.
+  datasource:
+    platform: postgres
+    url: "jdbc:postgresql://localhost:5432/pocdb"
+    username: test
+    password: test9988
+    driver-class-name: org.postgresql.Driver
+
+  #JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+      show-sql: true
+      database: postgresql
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  # MongoDB configuration
+  data:
+    mongodb:
+      database: claims-db
+      port: 27017
+      host: localhost
+
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: mbr_claim_process
+      auto-offset-reset: earliest
+
+# Kafka topic configuration where listening from topic
+topic:
+  name: mbr_claim_topic
+
+
+# Database configuration
+#  datasource:
+#    driverClassName: com.teradata.jdbc.TeraDriver
+#    url: jdbc:teradata://UDWTEST.UHC.COM/database=udwetlsandbox,LOGMECH=LDAP
+#    username: mgurram5
+#    password: Optum7919
+
+  # Teradata JPA Configuration
+#  jpa:
+#    database-platform: org.hibernate.dialect.TeradataDialect
+#    generate-ddl: true
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+
+
+# use a HTTP port 8080
+server:
+  port: 8085
+
+
+---
+spring:
+  profiles: stage
+
+server:
+  port: 8080
+
+
+---
+spring:
+  profiles: prod
+
+server:
+  port: 8080
+
+
+
