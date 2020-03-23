@@ -19,6 +19,8 @@ Swagger Documentation : http://localhost:8085/swagger-ui.html
     Headers -> "Content-Type":"application/json"
                "Accept-Charset":"UTF-8"
 ```
+### Architecture flow for enrichment-service
+## ![enrichment-service-logo](misc/Enrichment-Service-Archi.png)
 
 ### Jar file execution option 2 run application
  - Open command line prompt
