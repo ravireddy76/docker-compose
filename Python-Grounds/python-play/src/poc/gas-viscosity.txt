@@ -1,0 +1,9 @@
+gas,C,T_0,mu_0
+air,120,291.15,18.27
+nitrogen,111,300.55,17.81
+oxygen,127,292.25,20.18
+carbon dioxide,240,293.15,14.8
+carbon monoxide,118,288.15,17.2
+hydrogen,72,293.85,8.76
+ammonia,370,293.15,9.82
+sulphur dioxide,416,293.65,12.54
