@@ -1,0 +1,43 @@
+#  ---------------------------------------------------------------------------
+#
+#  Description:  This file holds all my BASH configurations and aliases
+#
+#  Sections:
+#  1.  Environment Configuration
+#  2.  Make Terminal Better (remapping defaults and adding functionality)
+#  3.  File and Folder Management
+#  4.  Searching
+#  5.  Process Management
+#  6.  Networking
+#  7.  System Operations & Information
+#  8.  Web Development
+#  9.  Reminders & Notes
+#
+#  ---------------------------------------------------------------------------
+
+#   -------------------------------
+#   1. ENVIRONMENT CONFIGURATION
+#   -------------------------------
+
+#   Set Paths
+#   ------------------------------------------------------------
+    export POWER_LINE_THEME="/Users/rredd16/Tools/Atom-Themes/"
+    export GRADLE_HOME="/Users/rredd16/Tools/Gradle/gradle-5.1.1/bin"
+    export MAVEN_HOME="/Users/rredd16/Tools/⁨Maven⁩/apache-maven-3.6.2/bin"
+    export JAVA_HOME="/Users/rredd16/Java-JDK/jdk-11.0.2.jdk/Contents/Home"
+    export PATH="$PATH:/usr/local/bin/"
+    export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:$PATH"
+    export PATH=$PATH:$JAVA_HOME:$GRADLE_HOME:$MAVEN_HOME
+
+    # This gives color themes for iTerm.
+    export CLICOLOR=1
+    export LSCOLORS=GxFxCxDxBxegedabagaced
+
+    # Powerline-Go Theme in iTerm2
+    function _update_ps1() {
+        PS1="$($POWER_LINE_THEME/powerline-go -error $?)"
+    }
+
+    if [ "$TERM" != "linux" ] && [ -f "$POWER_LINE_THEME/powerline-go" ]; then
+        PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+    fi
