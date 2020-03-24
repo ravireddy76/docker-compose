@@ -1,0 +1,281 @@
+{
+    "meta": {
+        "httpMethod": "GET",
+        "httpStatusCode": 200,
+        "timestamp": "2019-09-10T19:05:43.227Z"
+    },
+    "links": {
+        "self": "http://localhost:8081/entities?attrs=%7B%22NAME_LAST%22%3A%22Vickers%22%2C%22NAME_MIDDLE%22%3A%22J%22%2C%22NAME_FIRST%22%3A%22Sarah%22%2C%22GENDER%22%3A%22Female%22%2C%22DATE_OF_BIRTH%22%3A%2210-18-1941%22%2C%20%22MEDICARE_BENF_ID%22%3A%222WW7HA0NR79%22%7D&withRaw=false"
+    },
+    "rawData": null,
+    "data": {
+        "searchResults": [
+            {
+                "entityId": 43333382,
+                "entityName": "SARAH J VICKERS",
+                "bestName": null,
+                "recordSummaries": [
+                    {
+                        "dataSource": "IMSMEMBER",
+                        "recordCount": 2,
+                        "topRecordIds": [
+                            "ACT33716240"
+                        ]
+                    }
+                ],
+                "addressData": [
+                    "HOME: 500 DEERWOOD EST GENEVA AL 36340"
+                ],
+                "attributeData": [
+                    "DOB: 1941-10-18",
+                    "GENDER: FEMALE"
+                ],
+                "identifierData": [
+                    "MEDICARE_BENF_ID: 2WW7HA0NR79",
+                    "SUBSCRIBER_ID: 700029859370",
+                    "OWNER_CHID: ACT33716240",
+                    "HCID: 950318829",
+                    "SSN: XXXXXXXXX"
+                ],
+                "nameData": [
+                    "SARAH J VICKERS"
+                ],
+                "phoneData": [
+                    "CONTACT TELEPHONE: +13346182868",
+                    "REPORTED PHONE: +13346182868",
+                    "WORK PHONE: +13346843368"
+                ],
+                "relationshipData": [],
+                "otherData": [],
+                "features": {
+                    "ADDRESS": [
+                        {
+                            "primaryValue": "500 DEERWOOD EST GENEVA AL 36340",
+                            "usageType": "HOME",
+                            "duplicateValues": []
+                        }
+                    ],
+                    "DOB": [
+                        {
+                            "primaryValue": "1941-10-18",
+                            "usageType": null,
+                            "duplicateValues": []
+                        }
+                    ],
+                    "GENDER": [
+                        {
+                            "primaryValue": "FEMALE",
+                            "usageType": null,
+                            "duplicateValues": []
+                        }
+                    ],
+                    "HCID": [
+                        {
+                            "primaryValue": "950318829",
+                            "usageType": null,
+                            "duplicateValues": []
+                        }
+                    ],
+                    "MEDICARE_BENF_ID": [
+                        {
+                            "primaryValue": "2WW7HA0NR79",
+                            "usageType": null,
+                            "duplicateValues": []
+                        }
+                    ],
+                    "NAME": [
+                        {
+                            "primaryValue": "SARAH J VICKERS",
+                            "usageType": null,
+                            "duplicateValues": []
+                        }
+                    ],
+                    "OWNER_CHID": [
+                        {
+                            "primaryValue": "ACT33716240",
+                            "usageType": null,
+                            "duplicateValues": []
+                        }
+                    ],
+                    "PHONE": [
+                        {
+                            "primaryValue": "+13346182868",
+                            "usageType": "CONTACT TELEPHONE",
+                            "duplicateValues": []
+                        },
+                        {
+                            "primaryValue": "+13346182868",
+                            "usageType": "REPORTED PHONE",
+                            "duplicateValues": []
+                        },
+                        {
+                            "primaryValue": "+13346843368",
+                            "usageType": "WORK PHONE",
+                            "duplicateValues": []
+                        }
+                    ],
+                    "SSN": [
+                        {
+                            "primaryValue": "XXXXXXXX",
+                            "usageType": null,
+                            "duplicateValues": []
+                        }
+                    ],
+                    "SUBSCRIBER_ID": [
+                        {
+                            "primaryValue": "700029859370",
+                            "usageType": null,
+                            "duplicateValues": []
+                        }
+                    ]
+                },
+                "records": [
+                    {
+                        "dataSource": "IMSMEMBER",
+                        "recordId": "ACT33716240",
+                        "addressData": [
+                            "Home: 500 deerwood est geneva al 36340 US"
+                        ],
+                        "attributeData": [
+                            "DOB: 10-18-1941",
+                            "GENDER: Female"
+                        ],
+                        "identifierData": [
+                            "HCID: 950318829",
+                            "MEDICARE_BENF_ID: 2WW7HA0NR79",
+                            "OWNER_CHID: ACT33716240",
+                            "SSN: XXXXXXXXX",
+                            "SUBSCRIBER_ID: 700029859370"
+                        ],
+                        "nameData": [
+                            "Vickers Sarah J"
+                        ],
+                        "phoneData": [
+                            "Work Phone: +13346843368",
+                            "Reported Phone: +13346182868",
+                            "Contact Telephone: +13346182868"
+                        ],
+                        "relationshipData": [],
+                        "otherData": [
+                            "ADDRESS: CONCEPTOBS1118: ",
+                            "IDENTIFIERS: ACT30001",
+                            "IDENTIFIERS: OBS35569",
+                            "IDENTIFIERS: 6900029838869",
+                            "IDENTIFIERS: ACT04",
+                            "IDENTIFIERS: OBS262",
+                            "IDENTIFIERS: ACT30001",
+                            "IDENTIFIERS: OBS55507",
+                            "IDENTIFIERS: 700029859370~950318829~2",
+                            "IDENTIFIERS: ACT30001",
+                            "IDENTIFIERS: OBS3780",
+                            "IDENTIFIERS: ACT622",
+                            "IDENTIFIERS: OBS52261",
+                            "IDENTIFIERS: ACT30001",
+                            "IDENTIFIERS: OBS550",
+                            "PHONES: OBS205",
+                            "PHONES: OBS22871",
+                            "PHONES: OBS56373",
+                            "GENDERS: SOC1818",
+                            "ADDRESSES: ACT33716123"
+                        ],
+                        "originalSourceData": {
+                            "ADDRESSES": [
+                                {
+                                    "ADDR_CITY": "geneva",
+                                    "ADDR_COUNTRY": "US",
+                                    "ADDR_LINE1": "500 deerwood est",
+                                    "ADDR_POSTAL_CODE": "36340",
+                                    "ADDR_STATE": "al",
+                                    "ADDR_TYPE": "Home",
+                                    "ADDR_TYPE_CONCEPT": "OBS1118",
+                                    "LOCATION_CHID": "ACT33716123"
+                                }
+                            ],
+                            "DATA_SOURCE": "IMSMEMBER",
+                            "DATE_OF_BIRTHS": [
+                                {
+                                    "DATE_OF_BIRTH": "10-18-1941"
+                                }
+                            ],
+                            "ENTITY_TYPE": "IMSMEMBER",
+                            "GENDERS": [
+                                {
+                                    "GENDER": "Female",
+                                    "GENDERCONCEPT": "SOC1818"
+                                }
+                            ],
+                            "IDENTIFIERS": [
+                                {
+                                    "ASSIGNER": "ACT30001",
+                                    "TYPE_CONCEPT": "OBS35569",
+                                    "UHC_GPS_MKEY": "6900029838869"
+                                },
+                                {
+                                    "ASSIGNER": "ACT04",
+                                    "SSN_NUMBER": "XXXXXXXXXXX",
+                                    "TYPE_CONCEPT": "OBS262"
+                                },
+                                {
+                                    "ASSIGNER": "ACT30001",
+                                    "TYPE_CONCEPT": "OBS55507",
+                                    "UHC_GPS_CID": "700029859370~950318829~2"
+                                },
+                                {
+                                    "ASSIGNER": "ACT30001",
+                                    "HCID": "950318829",
+                                    "TYPE_CONCEPT": "OBS3780"
+                                },
+                                {
+                                    "ASSIGNER": "ACT622",
+                                    "MEDICARE_BENF_ID": "2WW7HA0NR79",
+                                    "TYPE_CONCEPT": "OBS52261"
+                                },
+                                {
+                                    "ASSIGNER": "ACT30001",
+                                    "SUBSCRIBER_ID": "700029859370",
+                                    "TYPE_CONCEPT": "OBS550"
+                                }
+                            ],
+                            "LOAD_ID": "08272019_IMS_FullExtract_3-43.json",
+                            "NAMES": [
+                                {
+                                    "NAME_FIRST": "Sarah",
+                                    "NAME_LAST": "Vickers",
+                                    "NAME_MIDDLE": "J"
+                                }
+                            ],
+                            "OWNER_CHID": "ACT33716240",
+                            "PHONES": [
+                                {
+                                    "PHONE_NUMBER": "+13346843368",
+                                    "PHONE_TYPE": "Work Phone",
+                                    "PHONE_TYPE_CONCEPT": "OBS205"
+                                },
+                                {
+                                    "PHONE_NUMBER": "+13346182868",
+                                    "PHONE_TYPE": "Reported Phone",
+                                    "PHONE_TYPE_CONCEPT": "OBS22871"
+                                },
+                                {
+                                    "PHONE_NUMBER": "+13346182868",
+                                    "PHONE_TYPE": "Contact Telephone",
+                                    "PHONE_TYPE_CONCEPT": "OBS56373"
+                                }
+                            ],
+                            "RECORD_ID": "ACT33716240"
+                        }
+                    }
+                ],
+                "matchLevel": 1,
+                "fullNameScore": 95,
+                "matchScore": 12,
+                "ambiguous": false,
+                "matchKey": "+NAME+DOB+GENDER+MEDICARE_BENF_ID",
+                "resolutionRuleCode": "SF1_PNAME_CSTAB",
+                "refScore": 9,
+                "partial": false,
+                "resultType": "MATCH"
+            }
+        ]
+    }
+}

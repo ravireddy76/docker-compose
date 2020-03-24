@@ -1,0 +1,241 @@
+Filter Patterns
+================
+
+public interface DataFilter {
+
+    /**
+     * Method to filter the data node based on given filter criteria.
+     *
+     * @param dataNode
+     * @return boolean
+     */
+    public boolean filter(JsonNode dataNode);
+
+}
+
+
+@Slf4j
+public class BusinessDateFilter implements DataFilter {
+    public Date startDate;
+    public Date endDate;
+
+    public BusinessDateFilter(String startDate, String endDate) {
+        validateDatesAndRange(startDate, endDate);
+    }
+
+    @Override
+    public boolean filter(JsonNode dataNode) {
+        String crdate;
+        try {
+            /* Validate to handle for api version < 2.3 data structure requests. */
+            JsonNode crdDataNode = dataNode.get(AppUtils.CLINICALLY_RELEVANT_DATE);
+            if (Objects.isNull(crdDataNode)) {
+                log.warn("There is no clinical relevant date field in the data node");
+                return false;
+            } else {
+                crdate = crdDataNode.textValue();
+            }
+
+            /* Validate clinically relevant date is empty or null; If it empty/null return true to get api response for given data node. */
+            if (StringUtils.isNotBlank(crdate)) {
+                Date clinicalRelevantDate = DateUtils.parseDateStrictly(crdate, AppUtils.DATE_PATTERNS);
+                boolean isCrdWithInStartAndEndDate = AppUtils.isDateInBetween(this.startDate, this.endDate, clinicalRelevantDate);
+                return isCrdWithInStartAndEndDate;
+            } else {
+                return true;
+            }
+        } catch (Exception ex) {
+            throw new IhrBadRequestException("Invalid clinical relevant date format from data node of payload; exception: ".concat(ex.getMessage()));
+        }
+    }
+
+    private void validateDatesAndRange(String startDate, String endDate) {
+        try {
+
+            this.startDate = DateUtils.parseDateStrictly(startDate, AppUtils.DATE_PATTERNS);
+            this.endDate = DateUtils.parseDateStrictly(endDate, AppUtils.DATE_PATTERNS);
+        } catch (Exception ex) {
+            throw new IhrBadRequestException("Invalid date format either in start/end date; exception: ".concat(ex.getMessage()));
+        }
+
+        /* Validate start and end date range as a 2nd level validation so
+           that appropriate and meaningful exception message will bubble up.*/
+        if (this.startDate.after(this.endDate)) {
+            throw new IhrBadRequestException("Invalid date range start date is after(greater than) end date.");
+        }
+    }
+
+}
+
+@Slf4j
+public class PresenceStateFilter implements DataFilter {
+    //TODO move to yaml file as configuration.
+    private static final String REFERENCE_PRESENCE_STATES = "Present, Not Present, Past Occurrence, Planned Occurrence";
+
+    public List<String> presenceStates;
+
+    public PresenceStateFilter(String presenceState) {
+        /* Validate presence state value is null or empty. */
+        if (StringUtils.isBlank(presenceState)) {
+            throw new IhrBadRequestException("PresenceState value can't be null or empty");
+        }
+
+        /* Validate requested presence state value is valid or not. */
+        this.presenceStates = Arrays.asList(presenceState.split("\\s*,\\s*"));
+        validatePresenceState();
+    }
+
+    @Override
+    public boolean filter(JsonNode dataNode) {
+        String presenceState;
+
+        /* Validate to handle  data structure requests which don't have presence state term. */
+        JsonNode presenceStateTermNode = dataNode.get(AppUtils.PRESENCE_STATE_TERM);
+        if (Objects.isNull(presenceStateTermNode)) {
+            log.warn("There is no presence state term field in the data node");
+            return false;
+        } else {
+            presenceState = presenceStateTermNode.textValue();
+        }
+
+        /* Validate given input present states exists or not. */
+        boolean isPresenceState = StringUtils.isBlank(presenceState) || this.presenceStates.contains(presenceState);
+        return isPresenceState;
+    }
+
+    private void validatePresenceState() {
+        List<String> presentStateTypes = Arrays.asList(REFERENCE_PRESENCE_STATES.split("\\s*,\\s*"));
+        List<Boolean> isAnyPresenceStates = new ArrayList<>();
+
+        /* Iterate and validate requested presence state filter value with reference presence state values. */
+        for (String requestedPresentState : this.presenceStates) {
+            boolean isValuePresent = presentStateTypes.contains(requestedPresentState);
+
+            /* Keep track on the requested present state filter values. */
+            if (!isValuePresent) {
+                isAnyPresenceStates.add(new Boolean(isValuePresent));
+            }
+        }
+
+        /* Validate requested presence state filters are not matching any of the presence state types. */
+        if (isAnyPresenceStates.size() == this.presenceStates.size()) {
+            throw new IhrBadRequestException("Requested presence state filter values are invalid");
+        }
+    }
+
+}
+
+@Slf4j
+public class DataContentFilterBuilder {
+
+    @Getter
+    private List<DataFilter> dataFilters;
+
+    public DataContentFilterBuilder() {
+    }
+
+    public DataContentFilterBuilder(Set<FilterPair> dataContentFilters) {
+        dataFilters = new ArrayList<>();
+
+        if (CollectionUtils.isNotEmpty(dataContentFilters)) {
+            /* Compute and build clinical relevant date filter. */
+            computeStartAndEndDateFilters(dataContentFilters, this.dataFilters);
+
+            /* Iterate and build data filters.*/
+            for (FilterPair filterPair : dataContentFilters) {
+                switch (filterPair.getKey()) {
+                    case AppUtils.PRESENCE_STATE:
+                        this.dataFilters.add(new PresenceStateFilter(filterPair.getValue()));
+                        break;
+                }
+            }
+        }
+    }
+
+  public void computeStartAndEndDateFilters(Set<FilterPair> inputFilters, List<DataFilter> dataFilters) throws IhrBadRequestException {
+        FilterPair clinicalStartDate = inputFilters.stream().filter(filterPair -> filterPair.getKey().equalsIgnoreCase(AppUtils.CLINICALLY_RELEVANT_START_DATE)).findAny().orElse(null);
+        FilterPair clinicalEndDate = inputFilters.stream().filter(filterPair -> filterPair.getKey().equalsIgnoreCase(AppUtils.CLINICALLY_RELEVANT_END_DATE)).findAny().orElse(null);
+
+        /* Validate if request have both start and end date filter or only start date or end date. */
+        if (Objects.nonNull(clinicalStartDate) && Objects.nonNull(clinicalEndDate)) {
+            dataFilters.add(new BusinessDateFilter(clinicalStartDate.getValue(), clinicalEndDate.getValue()));
+        } else if (Objects.nonNull(clinicalStartDate)) {
+            dataFilters.add(new BusinessDateFilter(clinicalStartDate.getValue(), LocalDate.now().toString()));
+        } else if (Objects.nonNull(clinicalEndDate)) {
+            throw new IhrBadRequestException("Data can't filter only with end date; Please provide start date");
+        }
+    }
+
+}
+
+@Slf4j
+@Singleton
+public class DataContentFilter {
+
+    public LinkedHashMap<String, JsonNode> filterDataClassesContent(LinkedHashMap<String, JsonNode> dataClassesPayload,
+                                                                    List<DataFilter> dataFilters) {
+
+        LinkedHashMap<String, JsonNode> filteredContent;
+
+        /* Validate filters are provided or not. */
+        if (CollectionUtils.isEmpty(dataFilters)) {
+            filteredContent = dataClassesPayload;
+        } else {
+            /* Apply filter criteria to filter data classes data. */
+            filteredContent = dataClassesFilteringByCriteria(dataClassesPayload, dataFilters);
+        }
+
+        return filteredContent;
+    }
+
+
+      public LinkedHashMap<String, JsonNode> dataClassesFilteringByCriteria(LinkedHashMap<String, JsonNode> dataClassesPayload, List<DataFilter> dataFilters) {
+        if (Objects.nonNull(dataClassesPayload)) {
+            for (Map.Entry<String, JsonNode> dataClass : dataClassesPayload.entrySet()) {
+
+                /* Validate and apply filters only for defined data classes which have data. */
+                if (getCrdFilters().contains(dataClass.getKey()) && dataClass.getValue().size() > 0) {
+
+                    /* Computed filtered data. */
+                    ArrayNode filteredData = filterDataByCriteria(dataClass.getValue(), dataFilters);
+                    dataClassesPayload.put(dataClass.getKey(), filteredData);
+                }
+            }
+        }
+
+        return dataClassesPayload;
+    }
+
+      @SuppressWarnings("unchecked")
+    public ArrayNode filterDataByCriteria(JsonNode dataNode, List<DataFilter> dataFilters) {
+        ArrayNode nodes = (ArrayNode) dataNode;
+        ArrayNode computedNodes = new ArrayNode(JsonNodeFactory.instance);
+
+        /* Filter data classes content. */
+        for (JsonNode jsonNode : nodes) {
+            boolean isValidFilter = false;
+
+            /* Iterate over the data filters and validate all filters are valid or not.*/
+            for (DataFilter dataFilter : dataFilters) {
+                isValidFilter = dataFilter.filter(jsonNode);
+
+                /* Id any given filters not valid break out of the loop. */
+                if (!isValidFilter) {
+                    break;
+                }
+            }
+            /* Collect the nodes which matches all all given filter criteria.*/
+            if (isValidFilter) {
+                computedNodes.add(jsonNode);
+            }
+        }
+
+        return computedNodes;
+    }
+
+    private List<String> getCrdFilters() {
+        List<String> crdFilters = Arrays.asList(AppUtils.CRD_FILTER_CLASSES.split("\\s*,\\s*"));
+        return crdFilters;
+    }
+
+}

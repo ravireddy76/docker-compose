@@ -1,0 +1,71 @@
+buildscript {
+    ext {
+        lombokVersion = '1.16.18'
+
+        groovyVersion = '2.4.9'
+        junitVersion = '4.12'
+        cglibVersion = '3.2.4'
+        objenesisVersion = '2.4'
+        cglibNodepVersion = '3.2.2'
+        spockReportsVersion = '1.2.13'
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'groovy'
+
+group 'com.play.poc'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    /** Lombok dependencies.*/
+  //  compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+   // annotationProcessor group:'org.projectlombok', name:'lombok', version:"${lombokVersion}"
+
+
+    /** Apache libraries. */
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
+    compile group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+    compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
+    compile "org.apache.commons:commons-collections4:4.3"
+    compile "commons-validator:commons-validator:1.6"
+
+    compile group: 'org.json', name: 'json', version: '20190722'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
+    compile group: 'io.github.java-diff-utils', name: 'java-diff-utils', version: '4.0'
+
+    /** Apache POI */
+    compile group: 'org.apache.poi', name: 'poi', version: '4.0.1'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.0.1'
+    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.0.1'
+    compile group: 'org.apache.poi', name: 'poi-scratchpad', version: '4.0.1'
+    compile group: 'io.github.millij', name: 'poi-object-mapper', version: '1.0.0'
+    compile group: 'com.github.ozlerhakan', name: 'poiji', version: '2.3.0'
+
+    /** Unit and Integration test dependencies.*/
+    testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: "${groovyVersion}"
+    testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+    testCompile group: 'cglib', name: 'cglib', version: "${cglibVersion}"
+    testCompile group: 'org.objenesis', name: 'objenesis', version: "${objenesisVersion}"
+    testCompile group: 'cglib', name: 'cglib-nodep', version: '3.2.2' // for stubbing of classes
+    testRuntime group: 'com.athaydes', name: 'spock-reports', version: '1.2.13'
+}
+
+configurations.all {
+    exclude module: 'slf4j-log4j12'
+}
