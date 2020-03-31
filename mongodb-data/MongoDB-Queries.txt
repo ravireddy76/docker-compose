@@ -1,0 +1,219 @@
+MongoDB Queries
+~~~~~~~~~~~~~~~~~
+
+MongoDB Queries
+~~~~~~~~~~~~
+db.getCollection('Payload_2').aggregate([
+    {$unwind: '$dataClasses'},
+    {$group: {_id: null, maxhealthStatuses: {$max: {$size: '$dataClasses.healthStatuses'}}}}
+])
+
+
+db.getCollection('Payload_2').aggregate([
+   {
+      $project: {
+         _id: 1,
+         numberOfHealthStatus: { $size: "$dataClasses.healthStatuses" }
+      }
+   }
+])
+
+
+db.getCollection('Payload_2').aggregate([
+    {$unwind: '$dataClasses'},
+    {$group: {_id: null,
+              maxHealthStatuses: {$max: {$size: '$dataClasses.healthStatuses'}},
+              maxAdverseReactions: {$max: {$size: '$dataClasses.adverseReactions'}},
+              maxCareGivers: {$max: {$size: '$dataClasses.careGivers'}},
+              maxCareTeam: {$max: {$size: '$dataClasses.careTeam'}},
+              maxConditions: {$max: {$size: '$dataClasses.conditions'}},
+              maxHealthDevices: {$max: {$size: '$dataClasses.healthDevices'}},
+              maxImmunizations: {$max: {$size: '$dataClasses.immunizations'}},
+              maxMedications: {$max: {$size: '$dataClasses.medications'}},
+              maxHealthObservations: {$max: {$size: '$dataClasses.healthObservations'}},
+              maxProcedureHistory: {$max: {$size: '$dataClasses.procedureHistory'}},
+              maxServiceProviders: {$max: {$size: '$dataClasses.serviceProviders'}},
+              maxVisitHistory: {$max: {$size: '$dataClasses.visitHistory'}}
+              }}
+])
+
+Query to find documents (or members) who have Medication and Immunization data classes information
+db.getCollection('Payload_2').aggregate([
+     {$project: {_id:1, correlationId:1,
+                 size_of_medication: {$size: "$dataClasses.medications"},
+                 size_of_immunization: {$size: "$dataClasses.immunizations"}
+                }
+     },
+     {$match: {"size_of_medication": {$gt: 1}}},
+     {$match: {"size_of_immunization": {$gt: 1}}}
+])
+
+
+Query to find documents (or members) which have all data classes information.
+db.getCollection('Payload_2').aggregate([
+     {$project: {_id:1, correlationId:1,
+                 size_of_healthStatuses: {$size: "$dataClasses.healthStatuses"},
+                 size_of_adverseReactions: {$size: "$dataClasses.adverseReactions"},
+                 size_of_careGivers: {$size: "$dataClasses.careGivers"},
+                 size_of_careTeam: {$size: "$dataClasses.careTeam"},
+                 size_of_conditions: {$size: "$dataClasses.conditions"},
+                 size_of_healthDevices: {$size: "$dataClasses.healthDevices"},
+                 size_of_immunization: {$size: "$dataClasses.immunizations"},
+                 size_of_medication: {$size: "$dataClasses.medications"},
+                 size_of_healthObservations: {$size: "$dataClasses.healthObservations"},
+                 size_of_procedureHistory: {$size: "$dataClasses.procedureHistory"},
+                 size_of_serviceProviders: {$size: "$dataClasses.serviceProviders"},
+                 size_of_visitHistory: {$size: "$dataClasses.visitHistory"}
+                }
+     },
+     {$match: {"size_of_healthStatuses": {$gt: 1}}},
+     {$match: {"size_of_adverseReactions": {$gt: 1}}},
+     {$match: {"size_of_careGivers": {$gt: 1}}},
+     {$match: {"size_of_careTeam": {$gt: 1}}},
+     {$match: {"size_of_conditions": {$gt: 1}}},
+     {$match: {"size_of_healthDevices": {$gt: 1}}},
+     {$match: {"size_of_immunization": {$gt: 1}}},
+     {$match: {"size_of_medication": {$gt: 1}}},
+     {$match: {"size_of_healthObservations": {$gt: 1}}},
+     {$match: {"size_of_procedureHistory": {$gt: 1}}},
+     {$match: {"size_of_serviceProviders": {$gt: 1}}},
+     {$match: {"size_of_visitHistory": {$gt: 1}}}
+])
+
+To Get Size of each document in a given collection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+db.getCollection(<Collection Name>).find({}).forEach(function(obj) {
+         var size = Object.bsonsize(obj);
+         var stats =  {
+               '_id': obj._id,
+               'bytes': size,
+               'KB': Math.round(size/(1024)),
+               'MB': Math.round(size/(1024*1024))
+         };
+       print(stats);
+});
+
+db.getCollection('transcribed_api_payload_v2').find({}).forEach(function(obj)
+{
+  var size = Object.bsonsize(obj);
+  var stats =
+  {
+    '_id': obj._id,
+    'bytes': size,
+    'KB': size/(1024),
+    'MB': size/(1024*1024)
+  };
+  print(stats);
+});
+
+var largestDocSize = 0;
+var largeDocStats = new Map();
+db.getCollection('transcribed_api_payload_v2').find({}).forEach(function(myObject) {
+   var currentDocumentSize = Object.bsonsize(myObject);
+   if(largestDocSize < currentDocumentSize ) {
+      largestDocSize = currentDocumentSize;
+      largeDocStats.put('_id', myObject._id);
+      largeDocStats.put('bytes', largestDocSize);
+      largeDocStats.put('KB', largestDocSize/(1024));
+      largeDocStats.put('MB', largestDocSize/(1024*1024));
+   }
+});
+print('>=>=>=>>> The Largest Document Stats <<<=<=<=<'+"\n"+
+      '_id : '+largeDocStats.get('_id')+"\n"+
+      'bytes :'+largeDocStats.get('bytes')+"\n"+
+      'KB :'+largeDocStats.get('KB')+"\n"+
+      'MB :'+largeDocStats.get('MB'));
+
+To delete multiple documents
+~~~~~~~~~~~~~~~~~~~~~~~~
+db.getCollection('Payload_2').remove({_id:{$in:['ACT71288698', 'ACT84169207']}})
+db.getCollection('Payload_2').remove({ '_id': /RTD/})
+db.getCollection('Payload_2').deleteMany({ '_id': /RTD/})
+
+
+Queries to find all documents using LIKE statement
+db.getCollection('Payload_2').find( { '_id': /UTC/ } )
+db.getCollection('Payload_2').find( { '_id': /RTD/ } )
+
+
+To search limited documents
+~~~~~~~~~~~~~~~~~~~~~~~
+db.getCollection("external_api_payload_v2").find({}).limit(5000)
+
+Search Results Dump
+~~~~~~~~~~~~~~~~~`
+db.getCollection("external_api_payload_v2").aggregate([
+{ $limit: 5000},
+{ $out:"5k_api_payload"}
+])
+
+db.getCollection('5k_api_payload').aggregate([
+    {$limit: 7},
+    {$project:
+        {
+            _id:1,
+            correlationId:1,
+            medication: {$arrayElemAt: ["$dataClasses.medications", 0]}
+        }
+     },
+     { $out:"5k_medication_api_payload"}
+])
+
+Kalyan
+~~~~~~~~~~
+db.getCollection('ce_sbr_collection').aggregate([
+
+    {$match: { "objects.attributes.values.stringValue" : 'GENENTECH'}},
+    {$project: {
+        objects: {$filter: {
+            input: '$objects',
+            as: 'objects',
+            cond: {$eq: ['$$objects.attributes.values.stringValue' , 'GENENTECH']}
+        }},
+        _id: 1
+    }}
+])
+
+
+# lastFillDate > 90
+db.getCollection('external_api_payload_v2').find({
+$and: [
+    { "_id":"ACT36517087" },
+    { "dataClasses.medications.clinicallyRelevantDate":{$gte:"2019-03-27", $lte:"2020-03-27"} },
+    { "dataClasses.medications.lastFillDate":{$gte:"2020-01-01", $lte:"2020-03-27"} },
+    { $or: [
+        {"dataClasses.medications.refillAuthroizedNumber":{$eq: 0.0 }},
+        {"dataClasses.medications.refillAuthroizedNumber":{$eq: null }}
+    ]}
+]})
+ 
+# lastFillDate < 90
+db.getCollection('external_api_payload_v2').find({
+$and: [
+    { "_id":"ACT36517087" },
+    { "dataClasses.medications.clinicallyRelevantDate":{$gte:"2019-03-27", $lte:"2020-03-27"} },
+    { "dataClasses.medications.lastFillDate":{$gte:"2020-01-31", $lte:"2020-03-27"} },
+    { $or: [
+        {"dataClasses.medications.refillAuthroizedNumber":{$eq: 0.0 }},
+        {"dataClasses.medications.refillAuthroizedNumber":{$eq: null }}
+    ]}
+]
+})
+
+db.getCollection('external_api_payload_v2').find({
+    $and: [
+        { "dataClasses.medications.icueSeqId":{$ne: null }},
+        { "dataClasses.medications.lastUpdateDate":{$ne: null }},
+        { "dataClasses.medications.clinicallyRelevantDate":{$gte:"2019-03-31", $lte:"2020-03-31"} },
+        { "dataClasses.medications.icueLastUpdateDate":{$lte: "dataClasses.medications.lastUpdateDate"} },
+        { "dataClasses.medications.lastFillDate":{$gte:"2020-01-01", $lte:"2020-03-31"} },
+        { "dataClasses.medications.refillAuthorizedNumber":{$eq: 0.0 }},
+        { "dataClasses.medications.presenceStateTerm":{$eq: "Present" }}
+]})
+ 
+
+
+https://stackoverflow.com/questions/23303222/getting-document-with-max-size-of-inner-array-in-mongodb
+https://www.mkyong.com/mongodb/mongodb-find-all-documents-where-an-array-list-size-is-greater-than-n/
+https://techbrij.com/mongodb-query-select-filter-child-nested-array
+https://stackoverflow.com/questions/16448175/whats-the-unwind-operator-in-mongodb
