@@ -211,6 +211,40 @@ db.getCollection('external_api_payload_v2').find({
         { "dataClasses.medications.presenceStateTerm":{$eq: "Present" }}
 ]})
  
+=========================================================================
+Step 1:
+~~~~~~~~~
+This will create 3K_api_payload collection and dump the 3K into the collection.
+
+db.getCollection("external_api_payload_v2").aggregate([
+   { $limit: 3000},
+   { $match: { "dataClasses.medications.medication.ihrLaymanTerm": { "$regex" : /.{40}/ } } },
+   { $out:"3k_api_payload"}
+])
+
+
+Step 2:
+~~~~~~~~~
+Below query read from 3K_api_payload collection and get only medication class from data classes and dump the 3K medication data into the 3k_medication_api_payload  collection.
+
+db.getCollection('3k_api_payload').aggregate([
+    {$limit: 3000},
+    {$project:
+        {
+            _id:1,
+            correlationId:1,
+            medication: {$arrayElemAt: ["$dataClasses.medications", 0]}
+        }
+     },
+     { $out:"3k_medication_api_payload"}
+])
+
+Step 3:
+~~~~~~~~``
+Go to Stduio 3T right click  3k_medication_api_payload collection and export as csv and save the output in a file *.csv
+
+==========================================================================
+
 
 
 https://stackoverflow.com/questions/23303222/getting-document-with-max-size-of-inner-array-in-mongodb
