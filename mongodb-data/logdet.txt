@@ -1,0 +1,128 @@
+Login Information
+~~~~~~~~~~~~~
+UID: rredd16
+Pwd: myGanesh@20
+
+EmployeeID : 000652899
+UHC-SSN: 3985
+E-mail : ravi.nancherla@uhg.com
+
+IT Help Desk :  888-848-3375
+
+Soft Token :
+PIN : 18190322
+
+Response 1 = 04/03/12
+Response 2 = advaya
+Response 3 = 07/19/86
+Response 4 = Roosevelt
+Response 5 = 9865795
+
+Tools Login
+=>=>=>=>=>=>
+Yubikey
+~~~~~~
+SerialNumber : 7541192
+Type: Yubikey 4
+
+YubiKey Card Pin : 18190322
+
+UHG-GitHub
+~~~~~~~~~~~~
+pwd: myGanesh@19
+
+Docker Hub
+~~~~~~~~~
+https://hub.docker.com
+ravireddy2
+myApps@19
+ravi.nancherla@uhg.com
+
+SourceTree
+~~~~~~~~~
+ravi.nancherla@uhg.com
+myApps@19
+
+PostMan
+~~~~~~~
+ravi.nancherla@uhg.com
+rr16uhg
+myApps@19
+
+UML Tools
+~~~~~~~~
+https://online.visual-paradigm.com/login.jsp
+UID : eobchanges@gmail.com
+Pwd : myApps@19
+
+Kafka-webview
+~~~~~~~~~~~
+http://localhost:8091/
+uid: admin@example.com
+pwd: admin
+
+
+Admin Rights Request
+~~~~~~~~~~~~~~~~
+
+Login into https://secure.uhc.com/
+
+Request following privileges for accessing
+
+For Admin Rights
+- [x] mac_admin
+
+
+For Justification use below phrase :-
+
+1) Yes, I am a developer working to develop the IHR API
+2) No PEX required
+3) Justification - As a Senior Engineer building the platform for streaming services such as Kafka there will be a multitude of reasons why I'll need local admin rights. First, to set up the development environment I'll need using ruby and other tools I'll need admin to get the installs and gem installations correct. Additionally parts of this tool chain I will need sudo to install.
+4) MAC Machine Name Requiring Admin Rights: Asset Tag: 4267213 Serial Number: C02YTH51LVCG hostname: LAMU02YTH51LVCG.uhc.com
+
+
+List following  to raise request from accessing
+
+- [x] github_users
+- [x] ihr_api_dev
+- [x] ihr_dev
+- [x] ihr_devops
+- [x] dtr_users
+- [x] optum_wiki_users (Go To SmartSpot)
+- [x] Soft_Token_Users – for vpn (Go To SmartSpot)
+- [x] MAC_MFA_VDI_USERS – for yubikey
+- [x] OpenShiftContainerPlatform_nonprod_users
+- [x] OpenShiftContainerPlatform_prod_users
+- [x] K8s_prod_usr
+- [x] SSMOSplunk_stargate_prod
+- [x] SSMOSplunk_centrihealth_ihr_Prod
+- [x] SSMOSplunk_centrihealth_ihr_Nonprod
+- [x] splunk_ihr_nonprod
+- [x] splunk_ihr_prod
+- [x] IHR_jira_developer
+- [x] IHR_jira_users 
+
+For Justification use phrase :  Yes, I am a developer working to develop the IHR API
+
+
+
+Git Commands
+~~~~~~~~~~~
+
+Upstream
+
+https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork
+
+- [x] git remote -v
+- [x] git remote add upstream https://github.optum.com/IHR/ihr-extract.git
+- [x] git fetch upstream
+- [x] git fetch upstream develop
+- [x] git pull UpStream-Origin master
+
+git pull UpStream-Origin master —ff-only
+
+git pull UpstreamOrigin master
+
+git pull UpStream-Origin master
+
+https://happygitwithr.com/upstream-changes.html
