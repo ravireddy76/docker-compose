@@ -1,0 +1,60 @@
+project:
+  artifactId: spring-elastic-poc
+  name: spring-elastic-poc
+  version: 1.0.0
+  description: Spring elastic-search poc to demonstrate how to store data in elastic search.
+
+
+# Exposing all the actuator end points (Spring 2.0) #
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          '*'
+
+  # Exposing the restart & shutdown endpoint
+  endpoint:
+    restart:
+      enabled: true
+    shutdown:
+      enabled: true
+
+# For Spring Actuator /info endpoint
+info:
+  artifact: ${project.artifactId}
+  name: ${project.name}
+  description: ${project.description}
+  version: ${project.version}
+
+# Spring
+spring:
+  application:
+    name: spring-elastic-poc
+  data:
+    elasticsearch:
+      properties:
+        host: 127.0.0.1
+        port: 9300
+
+# use a HTTP port 8080
+server:
+  port: 8085
+
+---
+spring:
+  profiles: stage
+
+server:
+  port: 8080
+
+
+---
+spring:
+  profiles: prod
+
+server:
+  port: 8080
+
+
+
