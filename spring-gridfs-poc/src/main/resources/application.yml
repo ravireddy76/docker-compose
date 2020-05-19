@@ -1,0 +1,83 @@
+project:
+  artifactId: spring-gridfs-poc
+  name: spring-gridfs-poc
+  version: 1.0.0
+  description: Spring gridfs poc to demonstrate how to leverage mongodb gridfs to store large size documents.
+
+
+# Exposing all the actuator end points (Spring 2.0) #
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          '*'
+
+  # Exposing the restart & shutdown endpoint
+  endpoint:
+    restart:
+      enabled: true
+    shutdown:
+      enabled: true
+
+# For Spring Actuator /info endpoint
+info:
+  artifact: ${project.artifactId}
+  name: ${project.name}
+  description: ${project.description}
+  version: ${project.version}
+
+# Spring
+spring:
+  application:
+    name: spring-gridfs-poc
+  data:
+    mongodb:
+      database: gridfs-poc
+      port: 27017
+      host: localhost
+
+# use a HTTP port 8080
+server:
+  port: 8085
+
+# Collection name configuration.
+collection:
+  imageColl: photos
+  videoColl: video
+  fileColl: bigFile
+
+# Vehicle sample data configuration
+vehicledata:
+  vehicles:
+    -
+      brand: Ferrari
+      model: 812 GTS
+      description: Ferrari is an Italian luxury sports car manufacturer based in Maranello
+    -
+      brand: Porsche
+      model: Panamera
+      description: German automobile manufacturer specializing in high-performance sports cars, SUVs and sedans
+    -
+      brand: Bugatti
+      model: Chiron
+      description: Bugatti was a French car manufacturer of high-performance automobiles
+
+
+---
+spring:
+  profiles: stage
+
+server:
+  port: 8080
+
+
+---
+spring:
+  profiles: prod
+
+server:
+  port: 8080
+
+
+
