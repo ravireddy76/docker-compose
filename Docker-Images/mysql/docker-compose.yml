@@ -1,0 +1,14 @@
+version: "3"
+services:
+  db:
+    image: "mysql:latest"
+    container_name: "Local-MySQL"
+    environment:
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test9988
+      - MYSQL_DATABASE=pocdb
+      - MYSQL_ROOT_PASSWORD=rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - /docker-tmp/mysql/data:/var/lib/mysql
