@@ -14,14 +14,15 @@ services:
     volumes:
       - /docker-tmp/postgres/data:/var/lib/postgresql/data
 
-  # MongoDB image
-  mongodb:
-    image: mongo:latest
-    container_name: "Local-MongoDB"
+  # MS SQL Server image
+  sql-server-db:
+    container_name: sql-server-db
+    image: microsoft/mssql-server-linux:2017-latest
     ports:
-      - "27017:27017"
-    volumes:
-      - ./data/db:/data/db
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "adminTest@20"
+      ACCEPT_EULA: "Y"
 
   # Kafka and Zookeeper image
   zookeeper:

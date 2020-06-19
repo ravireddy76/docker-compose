@@ -1,0 +1,13 @@
+version: "3"
+services:
+  db:
+    image: "postgres:latest"
+    container_name: "Local-Latest-Postgres"
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test9988
+      - POSTGRES_DB=pocdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - /Tools/docker-images-storage/postgres/latest/data:/var/lib/postgresql/data
