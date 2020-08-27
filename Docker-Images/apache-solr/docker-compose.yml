@@ -1,0 +1,9 @@
+version: '3'
+services:
+  solr:
+    image: solr:latest
+    container_name: "Local-Solr"
+    ports:
+      - 8983:8983
+    volumes:
+      - /docker-tmp/solr/core2:/opt/solr/server/solr/core2
