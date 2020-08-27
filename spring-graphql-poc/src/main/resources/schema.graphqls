@@ -1,0 +1,28 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Member {
+    id: String
+    groupId: String
+    fname: String
+    lname: String
+    address: String
+    claims: [String]
+}
+
+type Claim {
+    id: String
+    type: String
+    provider: String
+    icdCode: String
+    cptCode: String
+    clmDate: Date
+    paidAmount: Double
+    claimAmount: Double
+}
+
+type Query{
+
+}
