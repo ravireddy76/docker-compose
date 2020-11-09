@@ -1,0 +1,9 @@
+.table tbody tr:hover td, .table tbody tr:hover th {
+    background-color: rgba(255, 217, 0, 0.87);
+}
+
+.table tr.total td {
+    background-color:#b3e9f7 !important;
+    color: rgba(202, 16, 16, 0.781);
+    font-weight: bold;
+  }

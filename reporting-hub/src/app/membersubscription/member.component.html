@@ -1,0 +1,103 @@
+<div class="animated fadeIn">
+   <div class="row">
+      <div class="col-sm-6">
+         <form>
+
+            <div class="card">
+               <div class="card-header">
+                  <strong>Member Subscribers Report</strong>
+                  <small> Generate</small>
+               </div>
+               <div class="card-body">
+
+                  <div class="form-group row">
+                     <label class="col-sm-3 col-form-label" for="memberGroupId">Member Group Id:</label>
+                     <div class="col-sm-9">
+                        <input [(ngModel)]="memberSearch.memberGroupId" class="form-control" id="memGroupId"
+                           name="Member Group Id" placeholder="Enter member group id" required>
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-3 col-form-label" for="benefitTypeId">Benefit Type:</label>
+                     <div class="col-sm-9">
+                        <input [(ngModel)]="memberSearch.govtBenefitType" type="text" class="form-control" id="benefitTypeId"
+                           name="Benefit Type" placeholder="Enter Benefit Type" required>
+                     </div>
+                  </div>
+
+                  <div class="form-group row">
+                     <div class="col-sm-9 offset-sm-3">
+                        <button type="submit" class="btn btn-sm btn-primary" (click)="generateMemberSubscribersReport()">
+                           <i class="fa fa-dot-circle-o"></i> Generate</button>
+                        &nbsp;
+                        <button type="reset" class="btn btn-sm btn-danger">
+                           <i class="fa fa-ban"></i> Reset</button>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="col-sm-12" *ngIf="(memberReportData | async)?.length == 0">
+               <div class="panel-heading">
+                  <h5 style="color:rgb(255, 102, 0)"><strong>No data is available to generate member subscribers report.</strong></h5>
+               </div>
+            </div>
+            <div class="col-sm-12" *ngIf="(memberReportData | async)?.length > 0">
+               <div class="panel panel-default">
+                  <div class="panel-heading">
+                     <h6 style="color:rgb(255, 136, 0)">Generated Member Subscribers Report</h6>
+                  </div>
+
+                  <div class="panel-body" id="htmlReportData">
+                     <table class="table table-hover table-striped table-bordered">
+                        <thead class="thead-dark">
+                           <tr>
+                              <th>Member Group</th>
+                              <th>Benefit Type</th>
+                              <th>Membership Year/Month</th>
+                              <th>Single Subscribers</th>
+                              <th>Subscribers Plus Spouse</th>
+                              <th>Subscribers Plus Childern</th>
+                              <th>Subscribers Plus Family</th>
+                              <th>Total Subscribers</th>
+                              <!-- <th>Total Members</th> -->
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr *ngFor="let memberSubData of memberReportData | async">
+                              <td ng-if="memberSubData.memberGroup">{{memberSubData.memberGroup}}</td>
+                              <td ng-if="memberSubData.benefitType">{{memberSubData.benefitType}}</td>
+                              <td><a [title] = "memberSubData.membershipDate">{{memberSubData.membershipDate}}</a></td>
+                              <td>{{memberSubData.singleSubscribers}}</td>
+                              <td>{{memberSubData.subscribersSpouse}}</td>
+                              <td>{{memberSubData.subscribersChild}}</td>
+                              <td>{{memberSubData.subscribersFamily}}</td>
+                              <td>{{memberSubData.totalSubscribers}}</td>
+                              <!-- <td>{{memberSubData.totalMembers}}</td> -->
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="card-body">
+                     <div class="form-group row">
+                        <div class="col-sm-6 offset-sm-3">
+                           <button type="submit" class="btn btn-sm btn-danger" (click)="exportPDF()">
+                              <i class="fa fa-dot-circle-o"></i> Export PDF</button>
+                           &nbsp;
+                           <button type="submit" class="btn btn-sm btn-info" (click)="exportCSV()">
+                              <i class="fa fa-ban"></i> Export CSV</button>
+                           &nbsp;
+                           <button type="submit" class="btn btn-sm btn-success" (click)="exportExcel()">
+                              <i class="fa fa-ban"></i> Export Excel</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>

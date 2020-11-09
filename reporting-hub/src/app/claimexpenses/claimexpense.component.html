@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+   <div class="row">
+      <div class="col-sm-6">
+         <form>
+
+            <div class="card">
+               <div class="card-header">
+                  <strong>Claims Expenses Report</strong>
+                  <small> Generate</small>
+               </div>
+               <div class="card-body">
+
+                  <div class="form-group row">
+                     <label class="col-sm-3 col-form-label" for="memberGroupId">Member Group Id:</label>
+                     <div class="col-sm-9">
+                        <input [(ngModel)]="claimExpenseSearch.memberGroupId" class="form-control" id="memGroupId"
+                           name="Member Group Id" placeholder="Enter member group id" required>
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                     <label class="col-sm-3 col-form-label" for="bookYearId">Service Year:</label>
+                     <div class="col-sm-9">
+                        <input [(ngModel)]="claimExpenseSearch.bookYear" type="text" class="form-control" id="bookYearId"
+                           name="Service Year" placeholder="Enter service year" required>
+                     </div>
+                  </div>
+
+                  <div class="form-group row">
+                     <div class="col-sm-9 offset-sm-3">
+                        <button type="submit" class="btn btn-sm btn-primary" (click)="generateClaimExpenseReport()">
+                           <i class="fa fa-dot-circle-o"></i> Generate</button>
+                        &nbsp;
+                        <button type="reset" class="btn btn-sm btn-danger">
+                           <i class="fa fa-ban"></i> Reset</button>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="col-sm-12" *ngIf="(claimExpenseReportData | async)?.length == 0">
+               <div class="panel-heading">
+                  <h5 style="color:rgb(255, 102, 0)"><strong>No data is available to generate claims expense report.</strong></h5>
+               </div>
+            </div>
+            <div class="col-sm-12" *ngIf="(claimExpenseReportData | async)?.length > 0">
+               <div class="panel panel-default">
+                  <div class="panel-heading">
+                     <h6 style="color:rgb(255, 136, 0)">Generated Claims Expenses Report</h6>
+                  </div>
+
+                  <div class="panel-body" id="htmlReportData">
+                     <table class="table table-hover table-striped table-bordered">
+                        <thead class="thead-dark">
+                           <tr>
+                              <th>Range</th>
+                              <th>Number Of Claimants</th>
+                              <th>% Claimants</th>
+                              <th>Payments</th>
+                              <th>% Payments</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr *ngFor="let claimExpenseData of claimExpenseReportData | async; let idx = index" [class.total]="idx == 0">
+                              <td>{{claimExpenseData.range}}</td>
+                              <td>{{claimExpenseData.numberOfClaimants}}</td>
+                              <td>{{claimExpenseData.percentageClaimants}}</td>
+                              <td>{{claimExpenseData.totalPayments}}</td>
+                              <td>{{claimExpenseData.percentagePayments}}</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="card-body">
+                     <div class="form-group row">
+                        <div class="col-sm-6 offset-sm-3">
+                           <button type="submit" class="btn btn-sm btn-danger" (click)="exportPDF()">
+                              <i class="fa fa-dot-circle-o"></i> Export PDF</button>
+                           &nbsp;
+                           <button type="submit" class="btn btn-sm btn-info" (click)="exportCSV()">
+                              <i class="fa fa-ban"></i> Export CSV</button>
+                           &nbsp;
+                           <button type="submit" class="btn btn-sm btn-success" (click)="exportExcel()">
+                              <i class="fa fa-ban"></i> Export Excel</button>
+                        </div>
+                     </div>
+                  </div>
+                  
+               </div>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
