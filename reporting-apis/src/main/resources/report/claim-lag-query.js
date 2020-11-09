@@ -1,0 +1,1 @@
+db.claims.aggregate([{ $match: {"member.memberBenefit.memGroupID": "mgroupId"} }, { $match: {"claimEvent.cirrusReceiptDate": {"$regex": "bookYear" }} }, { $project: { "_id":1, "dateOfServiceStart": 1, "totalPaidAmt": 1, "claimEvent.cirrusReceiptDate": 1 }}])
