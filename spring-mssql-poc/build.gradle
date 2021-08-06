@@ -1,0 +1,83 @@
+buildscript {
+    ext {
+        lombokVersion = '1.18.6'
+
+        springBootVersion = '2.2.0.RELEASE'
+        springCloudVersion = 'Hoxton.RELEASE'
+        springfoxVersion = '2.9.2'
+        postgresqlVersion = '42.2.11'
+
+        groovyVersion = '2.4.9'
+        springSpockVersion = '1.1-groovy-2.4-rc-2'
+        junitVersion = '4.12'
+        cglibVersion = '3.2.4'
+        objenesisVersion = '2.4'
+        cglibNodepVersion = '3.2.2'
+        spockReportsVersion = '1.2.13'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'project-report'
+apply plugin: 'jacoco'
+
+
+
+group = 'com.poc.mssql'
+version ''
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    /** Lombok dependencies.*/
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+
+    /** Apache libraries. */
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
+    compile group: 'com.google.guava', name: 'guava', version: '23.0'
+    compile group: 'com.google.guava', name: 'guava', version: '29.0-jre'
+    compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '8.2.2.jre8'
+
+
+    /** Spring boot dependencies. */
+    compile group: 'org.springframework', name: 'spring-core', version: '5.3.3'
+    compile group: 'org.springframework', name: 'spring-orm', version: '5.3.3'
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '5.3.3'
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.4.3'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.2.0.Final'
+    compile group: 'org.hibernate', name: 'hibernate-annotations', version: '3.5.6-Final'
+
+
+    /** Unit and Integration test dependencies.*/
+    testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: "${groovyVersion}"
+    testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
+    testCompile group: 'cglib', name: 'cglib', version: "${cglibVersion}"
+    testCompile group: 'org.objenesis', name: 'objenesis', version: "${objenesisVersion}"
+    testCompile group: 'cglib', name: 'cglib-nodep', version: '3.2.2' // for stubbing of classes
+    testCompile group: 'org.spockframework', name: 'spock-core', version: "${springSpockVersion}"
+    testCompile group: 'org.spockframework', name: 'spock-spring', version: "${springSpockVersion}"
+    testRuntime group: 'com.athaydes', name: 'spock-reports', version: '1.2.13'
+}
+
+configurations.all {
+    exclude module: 'slf4j-log4j12'
+}
+
+
+

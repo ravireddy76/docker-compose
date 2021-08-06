@@ -1,0 +1,44 @@
+version: '3'
+services:
+  # Configuration server
+  config:
+    image: mongo
+    container_name: "MDB-Cluster-ConfigServer"
+    command: mongod --configsvr --replSet configserver --port 27017
+    volumes:
+      - ./scripts:/scripts
+
+  # Shards
+  shard1:
+    image: mongo
+    container_name: "MDB-Cluster-Shard1"
+    command: mongod --shardsvr --replSet shard1 --port 27018
+    volumes:
+      - ./scripts:/scripts
+  shard2:
+    image: mongo
+    container_name: "MDB-Cluster-Shard2"
+    command: mongod --shardsvr --replSet shard2 --port 27019
+    volumes:
+      - ./scripts:/scripts
+  shard3:
+    image: mongo
+    container_name: "MDB-Cluster-Shard3"
+    command: mongod --shardsvr --replSet shard3 --port 27020
+    volumes:
+      - ./scripts:/scripts
+
+  # Router
+  router:
+    image: mongo
+    container_name: "MDB-Cluster-Router"
+    command: mongos --configdb configserver/config:27017 --bind_ip_all --port 27017
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./scripts:/scripts
+    depends_on:
+      - config
+      - shard1
+      - shard2
+      - shard3

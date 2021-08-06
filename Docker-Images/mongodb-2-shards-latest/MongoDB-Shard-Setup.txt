@@ -1,0 +1,74 @@
+Steps to setup mongoDB sharding and cluster
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1) https://www.learncloudnative.com/blog/2020-05-12-creating-horizontal-partitions-or-shards-in-mongodb/
+
+
+Initialize and Configuring the configuration server
+======================================================
+
+init-config.js
+################
+rs.initiate({
+  _id: 'configserver',
+  configsvr: true,
+  version: 1,
+  members: [
+    {
+      _id: 0,
+      host: 'config:27017',
+    },
+  ],
+});
+
+
+command to execute for configure server:
+docker-compose exec config sh -c "mongo --port 27017 < ./scripts/init-config.js"
+
+
+Initialize and Configuring the shards
+======================================================
+
+Shards Scripts
+~~~~~~~~~~~~~~~
+/ -- start init-shard1.js --
+rs.initiate({
+  _id: 'shard1',
+  version: 1,
+  members: [{ _id: 0, host: 'shard1:27018' }],
+});
+// -- end init-shard2.js --
+
+// -- init-shard2.js --
+rs.initiate({
+  _id: 'shard2',
+  version: 1,
+  members: [{ _id: 0, host: 'shard2:27019' }],
+});
+// -- end init-shard2.js --
+
+// -- init-shard3.js --
+rs.initiate({
+  _id: 'shard3',
+  version: 1,
+  members: [{ _id: 0, host: 'shard3:27020' }],
+});
+// -- end init-shard3.js --
+
+
+commands to execute for shard servers:
+docker-compose exec shard1 sh -c "mongo --port 27018 < ./scripts/init-shard1.js"
+docker-compose exec shard2 sh -c "mongo --port 27019 < ./scripts/init-shard2.js"
+docker-compose exec shard3 sh -c "mongo --port 27020 < ./scripts/init-shard3.js"
+
+
+Initialize and Configuring the router
+=======================================
+
+Router Scripts
+~~~~~~~~~~~~~~~
+sh.addShard('shard1/shard1:27018');
+sh.addShard('shard2/shard2:27019');
+sh.addShard('shard3/shard3:27020');
+
+commands to execute for router:
+docker-compose exec router sh -c "mongo < ./scripts/init-router.js"
