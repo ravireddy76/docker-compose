@@ -1,7 +1,0 @@
-{
-  "/reporting/*": {
-    "target": "http://localhost:8086/reporting-data",
-    "secure": false,
-    "changeOrigin": true
-  }
-}

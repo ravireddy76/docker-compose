@@ -1,1 +1,0 @@
-db.member.aggregate([ { $match: {"memberbenefit": { $exists: true, $ne: null }} }, memGroupIdKey, govBenefitTypeKey, { $project: { "memGroupId": { $arrayElemAt: ["$subsaffiliation.memGroupID", 0]}, "govtBenefitType": { $arrayElemAt: ["$membercob.govtBenefitType", 0]}, "memberbenefit":"$memberbenefit" } } ])
